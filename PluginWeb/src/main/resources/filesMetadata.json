@@ -1,0 +1,19 @@
+{
+	"pluginBaseFlderPath": "/Users/aram/Documents/jars",
+	"pluginMetadaList": [
+		{
+			"pluginFileName": "jar1.jar",
+			"pluginFilePath": "/Users/aram/Documents/jars/jar1.jar",
+			"pluginClassName": "com.dynamic.boot.PluginOne",
+			"pluginServiceName": "simpleLoad",
+			"pluginMethodMetaData": [
+				{
+					"methodName": "load",
+					"paramList": [
+						"Watcher"
+					]
+				}
+			]
+		}
+	]
+}
