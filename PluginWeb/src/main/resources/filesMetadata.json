@@ -2,13 +2,13 @@
 	"pluginBaseFlderPath": "/Users/aram/Documents/jars",
 	"pluginMetadaList": [
 		{
-			"pluginFileName": "jar1.jar",
-			"pluginFilePath": "/Users/aram/Documents/jars/jar1.jar",
-			"pluginClassName": "com.dynamic.boot.PluginOne",
+			"pluginFileName": "jar3.jar",
+			"pluginFilePath": "/Users/aram/Documents/jars/jar3.jar",
+			"pluginClassName": "plugintwo.maven.PluginTwo",
 			"pluginServiceName": "simpleLoad",
 			"pluginMethodMetaData": [
 				{
-					"methodName": "load",
+					"methodName": "execute",
 					"paramList": [
 						"Watcher"
 					]

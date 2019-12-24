@@ -22,6 +22,8 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.stereotype.Service;
 
+import plugin.commons.interfaces.IPlugin;
+
 @Service
 public class LoaderServices {
 
@@ -93,7 +95,7 @@ public class LoaderServices {
 		try {
 			classLoader = new URLClassLoader(new URL[] { pluginUrl }, this.getClass().getClassLoader());
 
-			Class<?> serviceClass = Class.forName(pluginClassName, true, classLoader);
+			Class<IPlugin> serviceClass = (Class<IPlugin>) Class.forName(pluginClassName, true, classLoader);
 
 			registerClassToContext(serviceClass);
 
@@ -109,7 +111,7 @@ public class LoaderServices {
 	 * or not. If not try something like showing a message or unregister the bean
 	 * and re initiate it.
 	 */
-	private void registerClassToContext(Class<?> clazz)
+	private void registerClassToContext(Class<IPlugin> clazz)
 			throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
 
 		if (!isModified) {
@@ -121,7 +123,7 @@ public class LoaderServices {
 		executeClass(pluginServiceName, clazz);
 	}
 
-	private void executeClass(String serviceName, Class<?> clazz)
+	private void executeClass(String serviceName, Class<IPlugin> clazz)
 			throws InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 		if (isModified) {
 			beanRegisterReload(clazz);
@@ -174,18 +176,27 @@ public class LoaderServices {
 
 	}
 
+	/**
+	 * 
+	 * Here previously we were executing the method in a class through reflection
+	 * the code that performs it has been commented. Because, now we have created an
+	 * interface IPlugin so we can refer to the plugin interface and execute method
+	 * without using reflection.
+	 * 
+	 */
+
 	private void executeMethod(String serviceName, String MethodName, Map<String, Object> paramAndClasses)
 			throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-		Object pluginServiceInstance = this.context.getBean(serviceName);
 		try {
-
-			Method pluginServiceMethod = pluginServiceInstance.getClass().getDeclaredMethod(MethodName,
-					(Class<?>[]) paramAndClasses.get("classes"));
-			pluginServiceMethod.invoke(pluginServiceInstance, (Object[]) paramAndClasses.get("params"));
+			IPlugin pluginServiceInstance = (IPlugin) this.context.getBean(serviceName);
+			pluginServiceInstance.execute();
+			
+//			Method pluginServiceMethod = pluginServiceInstance.getClass().getDeclaredMethod(MethodName,
+//					(Class<?>[]) paramAndClasses.get("classes"));
+//			pluginServiceMethod.invoke(pluginServiceInstance, (Object[]) paramAndClasses.get("params"));
 
 		} catch (Exception e) {
-			// TODO: handle exception
-			System.out.println();
+			e.printStackTrace();
 		}
 	}
 
